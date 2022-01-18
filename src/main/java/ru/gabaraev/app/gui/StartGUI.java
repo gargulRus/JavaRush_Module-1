@@ -1,5 +1,7 @@
 package main.java.ru.gabaraev.app.gui;
 
+import main.java.ru.gabaraev.app.config.Enviroment;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,16 +15,9 @@ import java.awt.event.ActionListener;
 public class StartGUI {
 
     public StartGUI() {
-        /**
-         * Создаем первичное окно frame.
-         * В нем помещаем три кнопки btnDocLease, btnDocAddress и btnExit
-         * При нажатии на кнопку btnDocLease создается форма для создания договора Аренды помещения(DocAddressGUI)
-         * При нажатии на кнопку btnDocAddress создается форма для создания договора на Юр.Адрес(DocLealeGUI)
-         * При нажатии на кнопку btnExit программа закрывается.
-         */
         final JFrame frame = new JFrame();
         frame.setSize(600, 200);
-        frame.setTitle(Main.frameName);
+        frame.setTitle(Enviroment.frameName);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 

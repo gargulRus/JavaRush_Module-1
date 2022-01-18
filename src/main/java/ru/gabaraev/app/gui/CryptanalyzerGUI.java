@@ -1,5 +1,7 @@
 package main.java.ru.gabaraev.app.gui;
 
+import main.java.ru.gabaraev.app.config.Enviroment;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -31,16 +33,10 @@ public class CryptanalyzerGUI {
     private  static JTextField cryptokey = new JTextField(20);
 
     public CryptanalyzerGUI (){
-        /**
-         * Создаем главное окно frame. В нем размещаем mainpamel(JPanel). На mainpanel размещаем элементы интерфейса
-         * программы JLabel и JTextField, а так же кнопки "Ok" и "Cancel" (JButton).
-         * Разметку задаем через GridBagLayout.
-         * Далее создаем скроллбар scroll(JScrollPane). В него передаем mainpanel с объектами.
-         * Далее объект scroll добавляем на frame.
-         */
+
         JFrame frame = new JFrame();
         frame.setSize(800, 800);
-        frame.setTitle(Main.frameName);
+        frame.setTitle(Enviroment.frameName);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 
@@ -108,13 +104,6 @@ public class CryptanalyzerGUI {
         frame.pack();
     }
 
-    /**
-     * Создаем слушатель для кнопки "Ок".
-     * По нажатию на кнопку в класс передаются данные их TextField и записываются в переменные
-     * Формирование имени документа:
-     * Значение переменной полученной в поле dName записывается в  переменную dogname
-     * с подстановкой расширения документа (.docx)
-     */
     static class ButtonOk implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
@@ -123,11 +112,12 @@ public class CryptanalyzerGUI {
                 String cryptoKey = cryptokey.getText();
                 if (encryptAction(fileToEncrypt_file, cryptoKey) == 1) {
                     JFrame mdFrame = new JFrame();
-                    JOptionPane.showMessageDialog(mdFrame, "Файл успешно зашифрован!");
+                    JOptionPane.showMessageDialog(mdFrame, Enviroment.encryptSuccess);
+                    fileToEncrypt_file = null;
+                    fileToEncryptSelected.setText("...");
                 } else if (encryptAction(fileToEncrypt_file, cryptoKey) == -1){
                     JFrame mdFrame = new JFrame();
-                    JOptionPane.showMessageDialog(mdFrame, "Файл Существует! Удалите файл!");
-                    System.out.println("Файл Существует! Удалите файл!");
+                    JOptionPane.showMessageDialog(mdFrame, Enviroment.encryptError);
                 }
             }
 
@@ -135,22 +125,14 @@ public class CryptanalyzerGUI {
                 String cryptoKey = cryptokey.getText();
                 if (decryptAction(fileToDecrypt_file, cryptoKey) == 1) {
                     JFrame mdFrame = new JFrame();
-                    JOptionPane.showMessageDialog(mdFrame, "Файл успешно дешифрован!");
+                    JOptionPane.showMessageDialog(mdFrame, Enviroment.decryptSuccess);
+                    fileToDecrypt_file = null;
+                    fileToDecryptSelected.setText("...");
                 } else if (decryptAction(fileToDecrypt_file, cryptoKey) == -1){
                     JFrame mdFrame = new JFrame();
-                    JOptionPane.showMessageDialog(mdFrame, "Файл Существует! Удалите файл!");
-                    System.out.println("Файл Существует! Удалите файл!");
+                    JOptionPane.showMessageDialog(mdFrame, Enviroment.decryptError);
                 }
             }
-
-            /** После получения всех данных с JTextField и записи значений в переменные, происходит их передача в
-             * класс формирующий получившийся документ(DocAddressCreator).
-             * После успешного формирования документа приложение закрывается.
-             */
-//            new DocAddressCreator(cName, cNum, dateS, dateE, eName, rName, rNameP,
-//                    prise, pVat, aAdress, rInn, rKpp, rBank, rRs, rKs, rBik, rPhone, rEmail);
-
-            //System.exit(0);
         }
     }
 
@@ -168,6 +150,7 @@ public class CryptanalyzerGUI {
             if (ret == JFileChooser.APPROVE_OPTION) {
                 fileToEncrypt_file = fileopen.getSelectedFile();
                 fileToEncryptSelected.setText(fileToEncrypt_file.getName());
+
             }
         }
     }

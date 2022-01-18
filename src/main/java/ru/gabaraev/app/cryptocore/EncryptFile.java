@@ -35,10 +35,10 @@ public class EncryptFile {
         if (!Files.exists(out)) {
             try {
                 Files.write(out, readedLines, Charset.defaultCharset());
-                result = 1;
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            result = 1;
         } else {
             result = - 1;
         }

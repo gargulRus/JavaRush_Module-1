@@ -6,9 +6,6 @@ package main.java.ru.gabaraev.app.gui;
  * @author Nikolay Gabaraev
  */
 public class Main {
-
-    public static final String frameName = "Криптоанализатор";
-
     public static void main(String[] args) {
         new StartGUI();
     }

@@ -1,5 +1,7 @@
 package main.java.ru.gabaraev.app.gui;
 
+import main.java.ru.gabaraev.app.config.Enviroment;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -13,7 +15,7 @@ public class EncryptionGUI {
     public EncryptionGUI() {
         JFrame frame = new JFrame();
         frame.setSize(800, 800);
-        frame.setTitle(Main.frameName);
+        frame.setTitle(Enviroment.frameName);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 
