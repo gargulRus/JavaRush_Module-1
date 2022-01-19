@@ -26,7 +26,7 @@ public class DecryptFile {
         }
         String encryptFileName = file.getName().split("[.]")[0] + "_decrypted." + file.getName().split("[.]")[1];
         String filePathToSave = file.getParent() + "\\" + encryptFileName;
-
+        List<String> arrayToSave = СryptEngine.encryption(readedLines, key, 1);
         System.out.println("Дешифруем и сохраняем новый файл по пути - ");
         System.out.println(filePathToSave);
         System.out.println("Смещение " + key);
@@ -34,7 +34,7 @@ public class DecryptFile {
         Path out = Paths.get(filePathToSave);
         if (!Files.exists(out)) {
             try {
-                Files.write(out, readedLines, Charset.defaultCharset());
+                Files.write(out, arrayToSave, Charset.defaultCharset());
 
             } catch (IOException e) {
                 e.printStackTrace();

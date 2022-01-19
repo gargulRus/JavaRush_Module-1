@@ -9,6 +9,21 @@ public class Enviroment {
     //Настройки оружения
     public static final String frameName = "Криптоанализатор";
 
+    //Кнопки главного меню
+    public static final String buttonTask1 = "Шифрование / расшифровка";
+    public static final String buttonTask2 = "Криптоанализ";
+    public static final String buttonExit = "Выход";
+
+    //Кнопки и текст для Шифрования-Дешифрования
+    public static final String encryptLabel = "Выберите файл для зашифровки:";
+    public static final String decryptLabel = "Выберите файл для дешифровки:";
+    public static final String encDecFile = "Файл...";
+    public static final String encDecSelected = "...";
+    public static final String showDialogText = "Открыть файл";
+    public static final String cryptoLabel = "Задайте крипто-ключ :";
+    public static final String buttonOk = "Ok";
+    public static final String buttonCancel = "Cancel";
+
     //Сообщения об ошибках
     public static final String encryptSuccess = "Файл успешно зашифрован!";
     public static final String encryptError = "Файл Существует! Удалите файл!";

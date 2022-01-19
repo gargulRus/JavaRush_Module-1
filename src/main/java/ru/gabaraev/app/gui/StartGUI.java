@@ -1,7 +1,6 @@
 package main.java.ru.gabaraev.app.gui;
 
 import main.java.ru.gabaraev.app.config.Enviroment;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,24 +15,26 @@ public class StartGUI {
 
     public StartGUI() {
         final JFrame frame = new JFrame();
-        frame.setSize(600, 200);
         frame.setTitle(Enviroment.frameName);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension dimension = toolkit.getScreenSize();
+        frame.setBounds(dimension.width/2 - 300, dimension.height / 2 - 100, 600, 300);
 
         JPanel mainpanel = new JPanel();
         mainpanel.setLayout(new GridBagLayout());
 
-        JButton btnDocLease = new JButton("Шифрование / расшифровка");
-        JButton btnDocAddress = new JButton("Криптоанализ");
-        JButton btnExit = new JButton("Выход");
+        JButton buttonTask1 = new JButton(Enviroment.buttonTask1);
+        JButton buttonTask2 = new JButton(Enviroment.buttonTask2);
+        JButton btnExit = new JButton(Enviroment.buttonExit);
 
-        mainpanel.add(btnDocLease, new GridBagConstraints(1, 0, 1, 1, 0, 0,
+        mainpanel.add(buttonTask1, new GridBagConstraints(1, 0, 1, 1, 0, 0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20, 10, 0, 2), 0, 0)
         );
 
-        mainpanel.add(btnDocAddress, new GridBagConstraints(3, 0, 1, 1, 0, 0,
+        mainpanel.add(buttonTask2, new GridBagConstraints(3, 0, 1, 1, 0, 0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20, 10, 0, 2), 0, 0)
         );
@@ -47,7 +48,7 @@ public class StartGUI {
         frame.setVisible(true);
         frame.pack();
 
-        btnDocLease.addActionListener(new ActionListener() {
+        buttonTask1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new EncryptionGUI();
@@ -55,7 +56,7 @@ public class StartGUI {
             }
         });
 
-        btnDocAddress.addActionListener(new ActionListener() {
+        buttonTask2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new CryptanalyzerGUI();
