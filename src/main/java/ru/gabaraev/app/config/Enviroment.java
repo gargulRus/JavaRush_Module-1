@@ -21,8 +21,9 @@ public class Enviroment {
     public static final String encDecSelected = "...";
     public static final String showDialogText = "Открыть файл";
     public static final String cryptoLabel = "Задайте крипто-ключ :";
-    public static final String buttonOk = "Ok";
+    public static final String buttonOk = "Ок";
     public static final String buttonCancel = "Cancel";
+    public static final String buttonBack = "Назад";
 
     //Сообщения об ошибках
     public static final String encryptSuccess = "Файл успешно зашифрован!";

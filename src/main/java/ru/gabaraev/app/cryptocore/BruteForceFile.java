@@ -7,15 +7,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Locale;
 
 /*
- * @created 18/01/2022 - 15:04
+ * @created 20/01/2022 - 14:37
  * @project JavaRush_Module-1
  * @author Nikolay Gabaraev
  */
-public class EncryptFile {
+public class BruteForceFile {
 
-    public static int encryptAction(File file, String key) {
+    public static int bruteForceAction(File file) {
+
         int result = 0;
 
         List<String> readedLines = null;
@@ -25,13 +27,15 @@ public class EncryptFile {
             e.printStackTrace();
         }
 
-        String encryptFileName = file.getName().split("[.]")[0] + "_encrypted." + file.getName().split("[.]")[1];
+        String encryptFileName = file.getName().split("[.]")[0] + "_bruteforce." + file.getName().split("[.]")[1];
         String filePathToSave = file.getParent() + "\\" + encryptFileName;
-        List<String> arrayToSave = СryptEngine.encryption(readedLines, key, 0);
-        System.out.println("Шифруем и сохраняем новый файл по пути - ");
+        List<String> arrayToSave = BruteForceEngine.bruteForce(readedLines);
+        System.out.println("Брутфорсим и сохраняем новый файл по пути - ");
         System.out.println(filePathToSave);
-        System.out.println("Смещение " + key);
 
+        for (String s : arrayToSave) {
+            System.out.println(s);
+        }
         Path out = Paths.get(filePathToSave);
         if (!Files.exists(out)) {
             try {
@@ -43,7 +47,6 @@ public class EncryptFile {
         } else {
             result = - 1;
         }
-
 
         return result;
     }

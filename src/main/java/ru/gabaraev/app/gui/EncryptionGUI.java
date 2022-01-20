@@ -34,10 +34,12 @@ public class EncryptionGUI {
     public EncryptionGUI(){
 
         JFrame frame = new JFrame();
-        frame.setSize(800, 800);
         frame.setTitle(Enviroment.frameName);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension dimension = toolkit.getScreenSize();
+        frame.setBounds(dimension.width/2 - 400, dimension.height / 2 - 400, 800, 800);
 
         JPanel mainpanel = new JPanel();
         mainpanel.setLayout(new GridBagLayout());
@@ -109,12 +111,13 @@ public class EncryptionGUI {
 
             if (fileToEncrypt_file != null) {
                 String cryptoKey = cryptokey.getText();
-                if (encryptAction(fileToEncrypt_file, cryptoKey) == 1) {
+                int result = encryptAction(fileToEncrypt_file, cryptoKey);
+                if (result == 1) {
                     JFrame mdFrame = new JFrame();
                     JOptionPane.showMessageDialog(mdFrame, Enviroment.encryptSuccess);
                     fileToEncrypt_file = null;
                     fileToEncryptSelected.setText(Enviroment.encDecSelected);
-                } else if (encryptAction(fileToEncrypt_file, cryptoKey) == -1){
+                } else if (result == -1){
                     JFrame mdFrame = new JFrame();
                     JOptionPane.showMessageDialog(mdFrame, Enviroment.encryptError);
                 }

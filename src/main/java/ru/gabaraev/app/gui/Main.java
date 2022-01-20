@@ -6,7 +6,10 @@ package main.java.ru.gabaraev.app.gui;
  * @author Nikolay Gabaraev
  */
 public class Main {
+
+    static StartGUI mainGUI = null;
+
     public static void main(String[] args) {
-        new StartGUI();
+        mainGUI = new StartGUI();
     }
 }

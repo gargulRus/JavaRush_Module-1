@@ -12,15 +12,15 @@ import java.awt.event.ActionListener;
  * @author Nikolay Gabaraev
  */
 public class StartGUI {
-
+    public static JFrame frame = null;
     public StartGUI() {
-        final JFrame frame = new JFrame();
+        frame = new JFrame();
         frame.setTitle(Enviroment.frameName);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
-        frame.setBounds(dimension.width/2 - 300, dimension.height / 2 - 100, 600, 300);
+        frame.setBounds(dimension.width/2 - 400, dimension.height / 2 - 400, 800, 800);
 
         JPanel mainpanel = new JPanel();
         mainpanel.setLayout(new GridBagLayout());
