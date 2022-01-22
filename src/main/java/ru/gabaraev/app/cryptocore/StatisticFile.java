@@ -33,6 +33,11 @@ public class StatisticFile {
         List<String> arrayToSave = StatisticEngine.statisticAction(encryptFileList, patternFileList);
         System.out.println("Брутфорсим и сохраняем новый файл по пути - ");
         System.out.println(filePathToSave);
+
+        for (String s : arrayToSave) {
+            //System.out.println(s);
+        }
+
         result = 1;
         return result;
 
