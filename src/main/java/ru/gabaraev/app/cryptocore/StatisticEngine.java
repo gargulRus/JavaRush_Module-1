@@ -1,5 +1,7 @@
 package main.java.ru.gabaraev.app.cryptocore;
 
+import main.java.ru.gabaraev.app.config.Enviroment;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -12,10 +14,6 @@ public class StatisticEngine {
 
     public static int allCharsEnc = 0;
     public static int allCharsPatt = 0;
-
-    private static char[] alphabet = { 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж',
-            'з', 'и','й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с',
-            'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э','ю', 'я' , '.' , '"', ':', '-', '!', '?', ' '};
 
     public static List<String> statisticAction(List<String> encryptFileList, List<String> patternFileList) {
         List<String> resultList = new ArrayList<>();
@@ -34,18 +32,6 @@ public class StatisticEngine {
         int pp1 = 1;
         int pp2 = 1;
         int pp3 = 1;
-        System.out.println("Оригинал");
-        for (Map.Entry<Character, Integer> entry : encryptMap.entrySet()) {
-            //System.out.println(pp1 + " - " + entry.getKey() + " : " + entry.getValue());
-            pp1++;
-        }
-        System.out.println("Паттерн");
-        for (Map.Entry<Character, Integer> entry : patternMap.entrySet()) {
-            //System.out.println(pp2 + " - " + entry.getKey() + " : " + entry.getValue());
-            pp2++;
-        }
-        pp1=1;
-        pp2=1;
         System.out.println("Начнем сопоставление");
 
         for (Map.Entry<Character, Integer> entry : encryptMap.entrySet()) {
@@ -82,18 +68,17 @@ public class StatisticEngine {
                             (m ,c ) -> m.put(c.getKey(), c.getValue()),
                             LinkedHashMap::putAll);
         }
-//        pp1=1;
-//        pp2=1;
-//        for (Map.Entry<Character, Double> entry : testEncMap1.entrySet()) {
-//            System.out.println(pp1 + "- " + entry.getKey() + " - " + entry.getValue());
-//            pp1++;
-//        }
-//        System.out.println("======");
-//        for (Map.Entry<Character, Double> entry : testPattMap1.entrySet()) {
-//            System.out.println(pp2 + "- " + entry.getKey() + " - " + entry.getValue());
-//            pp2++;
-//        }
-
+        pp1=1;
+        pp2=1;
+        for (Map.Entry<Character, Double> entry : testEncMap1.entrySet()) {
+            System.out.println(pp1 + " - " + entry.getKey() + ".- " + entry.getValue());
+            pp1++;
+        }
+        System.out.println("============");
+        for (Map.Entry<Character, Double> entry : testPattMap1.entrySet()) {
+            System.out.println(pp2 + " - " + entry.getKey() + ".- " + entry.getValue());
+            pp2++;
+        }
 
         pp1=1;
         pp2=1;
@@ -107,12 +92,29 @@ public class StatisticEngine {
             pp2++;
         }
 
-        for (Map.Entry<Integer, Character> entry : testEncMapResult.entrySet()) {
-            System.out.println(entry.getKey() + ".- " + entry.getValue());
-        }
-        System.out.println("============");
-        for (Map.Entry<Integer, Character> entry : testPattMapResult.entrySet()) {
-            System.out.println(entry.getKey() + ".- " + entry.getValue());
+//        for (Map.Entry<Integer, Character> entry : testEncMapResult.entrySet()) {
+//            System.out.println(entry.getKey() + ".- " + entry.getValue());
+//        }
+//        System.out.println("============");
+//        for (Map.Entry<Integer, Character> entry : testPattMapResult.entrySet()) {
+//            System.out.println(entry.getKey() + ".- " + entry.getValue());
+//        }
+
+        for (int i = 0; i < encryptFileList.size(); i++) {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            char[] charLine = encryptFileList.get(i).toLowerCase(Locale.ROOT).toCharArray();
+            for (int j = 0; j < charLine.length; j++) {
+                if (testEncMapResult.containsValue(charLine[j])) {
+                    int key = findKey( testEncMapResult, charLine[j]);
+                    if (key > -1) {
+                        stringBuilder.append(testPattMapResult.get(key));
+                    }
+                } else {
+                    stringBuilder.append(charLine[j]);
+                }
+            }
+            resultList.add(stringBuilder.toString());
         }
         //end of test
 
@@ -124,22 +126,22 @@ public class StatisticEngine {
 //            }
 //        }
 
-        for (int i = 0; i < encryptFileList.size(); i++) {
-            StringBuilder stringBuilder = new StringBuilder();
-
-            char[] charLine = encryptFileList.get(i).toLowerCase(Locale.ROOT).toCharArray();
-            for (int j = 0; j < charLine.length; j++) {
-                if (resultEncryptMap.containsValue(charLine[j])) {
-                    int key = findKey( resultEncryptMap, charLine[j]);
-                    if (key > -1) {
-                        stringBuilder.append(resultPatternMap.get(key));
-                    }
-                } else {
-                    stringBuilder.append(charLine[j]);
-                }
-            }
-            resultList.add(stringBuilder.toString());
-        }
+//        for (int i = 0; i < encryptFileList.size(); i++) {
+//            StringBuilder stringBuilder = new StringBuilder();
+//
+//            char[] charLine = encryptFileList.get(i).toLowerCase(Locale.ROOT).toCharArray();
+//            for (int j = 0; j < charLine.length; j++) {
+//                if (resultEncryptMap.containsValue(charLine[j])) {
+//                    int key = findKey( resultEncryptMap, charLine[j]);
+//                    if (key > -1) {
+//                        stringBuilder.append(resultPatternMap.get(key));
+//                    }
+//                } else {
+//                    stringBuilder.append(charLine[j]);
+//                }
+//            }
+//            resultList.add(stringBuilder.toString());
+//        }
 
         return resultList;
     }
@@ -180,8 +182,8 @@ public class StatisticEngine {
 
     public static boolean checkChar (char c) {
         boolean result = false;
-        for (int i = 0; i < alphabet.length; ++i) {
-            if (c == alphabet[i]) result = true;
+        for (int i = 0; i < Enviroment.alphabet.length; ++i) {
+            if (c == Enviroment.alphabet[i]) result = true;
         }
         return result;
     }

@@ -1,5 +1,7 @@
 package main.java.ru.gabaraev.app.cryptocore;
 
+import main.java.ru.gabaraev.app.config.Enviroment;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -11,10 +13,6 @@ import java.util.Locale;
  */
 public class СryptEngine {
 
-    private static char[] alphabet = { 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж',
-            'з', 'и','й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с',
-            'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э','ю', 'я' , '.' , '"', ':', '-', '!', '?', ' '};
-
     public static List<String> encryption (List<String> readedLines, String key, int mode) {
         List<String> result = new ArrayList();
 
@@ -23,8 +21,17 @@ public class СryptEngine {
             keyCrypt = 1;
         } else {
             keyCrypt = Integer.parseInt(key);
+            if (keyCrypt > Enviroment.alphabet.length) {
+                while (keyCrypt > Enviroment.alphabet.length) {
+                    keyCrypt = keyCrypt - Enviroment.alphabet.length;
+                }
+            } else if (keyCrypt < 0) {
+                while (keyCrypt < 0) {
+                    keyCrypt = keyCrypt + Enviroment.alphabet.length;
+                }
+            }
         }
-
+        System.out.println(keyCrypt);
         for (int i = 0; i < readedLines.size(); i++) {
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -36,17 +43,17 @@ public class СryptEngine {
                     int cryptIndex = 0;
                     if (mode == 0) {
                         cryptIndex = getIndex + keyCrypt;
-                        if (cryptIndex >= alphabet.length) {
-                            cryptIndex = cryptIndex - alphabet.length;
+                        if (cryptIndex >= Enviroment.alphabet.length) {
+                            cryptIndex = cryptIndex - Enviroment.alphabet.length;
                         }
                     } else if(mode == 1){
                         cryptIndex = getIndex - keyCrypt;
                         if (cryptIndex < 0) {
-                            cryptIndex = alphabet.length + (cryptIndex);
+                            cryptIndex = Enviroment.alphabet.length + (cryptIndex);
                         }
                     }
-                    System.out.println(getIndex + " _ " + cryptIndex + " _ " + alphabet[cryptIndex] + " _ " + charLine[j]);
-                    stringBuilder.append(alphabet[cryptIndex]);
+                    System.out.println(getIndex + " _ " + cryptIndex + " _ " + Enviroment.alphabet[cryptIndex] + " _ " + charLine[j]);
+                    stringBuilder.append(Enviroment.alphabet[cryptIndex]);
                 } else {
                     stringBuilder.append(charLine[j]);
                 }
@@ -59,8 +66,8 @@ public class СryptEngine {
 
     public static int getCryptIndex (char c) {
         int index = -1;
-        for (int i = 0; i < alphabet.length; ++i) {
-            if (c == alphabet[i]) index = i;
+        for (int i = 0; i < Enviroment.alphabet.length; ++i) {
+            if (c == Enviroment.alphabet[i]) index = i;
         }
         return index;
     }

@@ -22,7 +22,6 @@ public class Enviroment {
     public static final String showDialogText = "Открыть файл";
     public static final String cryptoLabel = "Задайте крипто-ключ :";
     public static final String buttonOk = "Ок";
-    public static final String buttonCancel = "Cancel";
     public static final String buttonBack = "Назад";
 
     //Сообщения об ошибках
@@ -31,5 +30,9 @@ public class Enviroment {
     public static final String decryptSuccess = "Файл успешно дешифрован!";
     public static final String decryptError = "Файл Существует! Удалите файл!";
 
+    //Алфавит
+    public static final char[] alphabet = { 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж',
+            'з', 'и','й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с',
+            'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э','ю', 'я' , '.' , '\"', ':', '-', '!', '?', '\u0020'};
 
 }

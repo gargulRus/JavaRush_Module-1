@@ -8,8 +8,12 @@ package main.java.ru.gabaraev.app.gui;
 public class Main {
 
     static StartGUI mainGUI = null;
+    static EncryptionGUI encryptionGUI = null;
+    static CryptanalyzerGUI cryptanalyzerGUI = null;
 
     public static void main(String[] args) {
         mainGUI = new StartGUI();
+        encryptionGUI = new EncryptionGUI();
+        cryptanalyzerGUI = new CryptanalyzerGUI();
     }
 }

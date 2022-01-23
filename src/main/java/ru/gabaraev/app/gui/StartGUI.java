@@ -20,7 +20,7 @@ public class StartGUI {
         frame.setLocationRelativeTo(null);
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
-        frame.setBounds(dimension.width/2 - 400, dimension.height / 2 - 400, 800, 800);
+        frame.setBounds(dimension.width/2 - 250, dimension.height / 2 - 100, 500, 200);
 
         JPanel mainpanel = new JPanel();
         mainpanel.setLayout(new GridBagLayout());
@@ -46,12 +46,11 @@ public class StartGUI {
 
         frame.add(mainpanel);
         frame.setVisible(true);
-        frame.pack();
 
         buttonTask1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new EncryptionGUI();
+                EncryptionGUI.frame.setVisible(true);
                 frame.setVisible(false);
             }
         });
@@ -59,7 +58,7 @@ public class StartGUI {
         buttonTask2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CryptanalyzerGUI();
+                CryptanalyzerGUI.frame.setVisible(true);
                 frame.setVisible(false);
             }
         });

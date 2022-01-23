@@ -2,7 +2,9 @@ package main.java.ru.gabaraev.app.cryptocore;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -34,11 +36,18 @@ public class StatisticFile {
         System.out.println("Брутфорсим и сохраняем новый файл по пути - ");
         System.out.println(filePathToSave);
 
-        for (String s : arrayToSave) {
-            //System.out.println(s);
+        Path out = Paths.get(filePathToSave);
+        if (!Files.exists(out)) {
+            try {
+                Files.write(out, arrayToSave, Charset.defaultCharset());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            result = 1;
+        } else {
+            result = - 1;
         }
 
-        result = 1;
         return result;
 
     }

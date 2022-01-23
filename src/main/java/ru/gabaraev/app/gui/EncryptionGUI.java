@@ -17,6 +17,8 @@ import static main.java.ru.gabaraev.app.cryptocore.EncryptFile.encryptAction;
  */
 public class EncryptionGUI {
 
+    public static JFrame frame = null;
+
     public static File fileToEncrypt_file = null;
     public static File fileToDecrypt_file = null;
 
@@ -31,21 +33,22 @@ public class EncryptionGUI {
     private  static final JLabel cryptokeyLabel = new JLabel(Enviroment.cryptoLabel);
     private  static JTextField cryptokey = new JTextField(10);
 
+    public static final JButton btnOk = new JButton(Enviroment.buttonOk);
+    public static final JButton buttonBack = new JButton(Enviroment.buttonBack);
+
     public EncryptionGUI(){
 
-        JFrame frame = new JFrame();
+        frame = new JFrame();
         frame.setTitle(Enviroment.frameName);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
-        frame.setBounds(dimension.width/2 - 400, dimension.height / 2 - 400, 800, 800);
+        frame.setBounds(dimension.width/2 - 400, dimension.height / 2 - 150, 800, 300);
 
         JPanel mainpanel = new JPanel();
         mainpanel.setLayout(new GridBagLayout());
 
-        JButton btnOk = new JButton(Enviroment.buttonOk);
-        JButton btnCancel = new JButton(Enviroment.buttonCancel);
 
         mainpanel.add(fileToEncryptLabel, new GridBagConstraints(1,0,1,1,0,0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
@@ -55,7 +58,7 @@ public class EncryptionGUI {
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20,10,0,20), 0,0)
         );
-        mainpanel.add(fileToEncryptSelected, new GridBagConstraints(3,0,1,1,0,0,
+        mainpanel.add(fileToEncryptSelected, new GridBagConstraints(3,0,3,1,0,0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20,10,0,20), 0,0)
         );
@@ -67,7 +70,7 @@ public class EncryptionGUI {
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20,10,0,20), 0,0)
         );
-        mainpanel.add(fileToDecryptSelected, new GridBagConstraints(3,3,1,1,0,0,
+        mainpanel.add(fileToDecryptSelected, new GridBagConstraints(3,3,3,1,0,0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20,10,0,20), 0,0)
         );
@@ -86,13 +89,21 @@ public class EncryptionGUI {
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20,10,0,0), 1,1)
         );
-        mainpanel.add(btnCancel, new GridBagConstraints(6,18,1,1,1,1,
+        mainpanel.add(buttonBack, new GridBagConstraints(6,18,1,1,1,1,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20,10,0,0), 1,1)
         );
 
         btnOk.addActionListener(new ButtonOk());
-        btnCancel.addActionListener(new ButtonCancel());
+
+        buttonBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.setVisible(false);
+                StartGUI.frame.setVisible(true);
+            }
+        });
+
         fileToEncrypt.addActionListener(new fileToEncryptAction());
         fileToDecrypt.addActionListener(new fileToDecryptAction());
 
@@ -101,8 +112,7 @@ public class EncryptionGUI {
                 JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
         frame.add(scroll);
-        frame.setVisible(true);
-        frame.pack();
+        frame.setVisible(false);
     }
 
     static class ButtonOk implements ActionListener {
@@ -138,12 +148,7 @@ public class EncryptionGUI {
         }
     }
 
-    static class ButtonCancel implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            System.exit(0);
-        }
-    }
+
 
     static class fileToEncryptAction implements ActionListener {
         public void actionPerformed(ActionEvent e) {

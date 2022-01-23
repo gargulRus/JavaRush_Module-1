@@ -33,9 +33,6 @@ public class BruteForceFile {
         System.out.println("Брутфорсим и сохраняем новый файл по пути - ");
         System.out.println(filePathToSave);
 
-        for (String s : arrayToSave) {
-            System.out.println(s);
-        }
         Path out = Paths.get(filePathToSave);
         if (!Files.exists(out)) {
             try {

@@ -38,20 +38,20 @@ public class CryptanalyzerGUI {
 
     public CryptanalyzerGUI() {
 //        JFrame frame = new JFrame();
-        frame.setSize(800, 800);
+        //frame.setSize(800, 800);
         frame.setTitle(Enviroment.frameName);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
-//        Toolkit toolkit = Toolkit.getDefaultToolkit();
-//        Dimension dimension = toolkit.getScreenSize();
-//        frame.setBounds(dimension.width/2 - 400, dimension.height / 2 - 400, 800, 800);
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension dimension = toolkit.getScreenSize();
+        frame.setBounds(dimension.width/2 - 350, dimension.height / 2 - 150, 700, 300);
 
         JPanel mainpanel = new JPanel();
         mainpanel.setLayout(new GridBagLayout());
 
         mainpanel.add(fileToParseLabel, new GridBagConstraints(1,0,1,1,0,0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
-                new Insets(20,10,0,2), 0,0)
+                new Insets(20,10,0,20), 0,0)
         );
 
         mainpanel.add(bruteForce, new GridBagConstraints(1,1,1,1,0,0,
@@ -67,16 +67,16 @@ public class CryptanalyzerGUI {
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20,10,0,2), 0,0)
         );
-        mainpanel.add(fileToParseSelected, new GridBagConstraints(3,0,1,1,0,0,
+        mainpanel.add(fileToParseSelected, new GridBagConstraints(3,0,3,1,0,0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20,10,0,0), 0,0)
         );
 
-        mainpanel.add(btnOk, new GridBagConstraints(3,3,1,1,1,1,
+        mainpanel.add(btnOk, new GridBagConstraints(4,3,1,1,1,1,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20,10,5,2), 1,1)
         );
-        mainpanel.add(buttonBack, new GridBagConstraints(4,3,1,1,1,1,
+        mainpanel.add(buttonBack, new GridBagConstraints(5,3,1,1,1,1,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20,10,5,20), 1,1)
         );
@@ -101,9 +101,33 @@ public class CryptanalyzerGUI {
                 JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
         frame.add(scroll);
-        frame.setVisible(true);
-        frame.pack();
+        frame.setVisible(false);
+        //frame.pack();
 
+        helpFrame.setSize(700, 200);
+        helpFrame.setTitle(Enviroment.frameName);
+        helpFrame.setLocationRelativeTo(null);
+        JPanel helppanel = new JPanel();
+        helppanel.setLayout(new GridBagLayout());
+        helppanel.add(fileToHelpLabel,new GridBagConstraints(1,0,1,1,0,0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+                new Insets(20,10,0,20), 0,0));
+        helppanel.add(fileToHelp,new GridBagConstraints(2,0,1,1,0,0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+                new Insets(20,10,0,20), 0,0));
+        helppanel.add(fileToHelpSelected,new GridBagConstraints(3,0,3,1,0,0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+                new Insets(20,10,0,20), 0,0));
+        helppanel.add(btnHelpOk,new GridBagConstraints(4,1,1,1,0,0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+                new Insets(20,10,0,0), 0,0));
+
+        JScrollPane scrollHelp = new JScrollPane(helppanel,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+        helpFrame.add(scrollHelp);
+        helpFrame.setVisible(false);
     }
 
     static class ButtonOk implements ActionListener {
@@ -129,22 +153,10 @@ public class CryptanalyzerGUI {
                     }
 
                 } else if (statistical.isSelected()) {
-                    System.out.println("Будет дешифровать статистикой");
-                    helpFrame.setSize(400, 400);
-                    helpFrame.setTitle(Enviroment.frameName);
-                    helpFrame.setLocationRelativeTo(null);
-                    JPanel helppanel = new JPanel();
-                    helppanel.setLayout(new GridBagLayout());
-                    helppanel.add(fileToHelpLabel);
-                    helppanel.add(fileToHelp);
-                    helppanel.add(fileToHelpSelected);
-                    helppanel.add(btnHelpOk);
-                    helpFrame.add(helppanel);
+                    System.out.println("Будем дешифровать статистикой");
                     helpFrame.setVisible(true);
-
                     fileToHelp.addActionListener(new fileToHelpAction());
                     btnHelpOk.addActionListener(new ButtonHelpOk());
-                    fileToParseSelected.setText(Enviroment.encDecSelected);
                 } else {
                     JFrame mdFrame = new JFrame();
                     JOptionPane.showMessageDialog(mdFrame, "Выберите метод анализа!", "Внимание!", JOptionPane.ERROR_MESSAGE);
@@ -161,8 +173,20 @@ public class CryptanalyzerGUI {
         public void actionPerformed(ActionEvent e) {
             if(fileToParse_file != null && fileToHelp_file != null) {
                 System.out.println("Получили два файла. Выбран метод статистики");
-                StatisticFile.statisticAction(fileToParse_file, fileToHelp_file);
-                helpFrame.setVisible(false);
+                int result = StatisticFile.statisticAction(fileToParse_file, fileToHelp_file);
+                if (result == 1) {
+                    JFrame mdFrame = new JFrame();
+                    JOptionPane.showMessageDialog(mdFrame, "Файл расшифрован");
+                    fileToParse_file = null;
+                    fileToHelp_file = null;
+                    fileToParseSelected.setText(Enviroment.encDecSelected);
+                    helpFrame.setVisible(false);
+                } else if (result == -1){
+                    JFrame mdFrame = new JFrame();
+                    JOptionPane.showMessageDialog(mdFrame, "Ошибка! файл сущетсвует удалите!");
+                    fileToHelp_file = null;
+                    fileToHelpSelected.setText(Enviroment.encDecSelected);
+                }
 
             }
         }
@@ -190,4 +214,5 @@ public class CryptanalyzerGUI {
             }
         }
     }
+
 }
