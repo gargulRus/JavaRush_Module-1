@@ -15,26 +15,23 @@ import java.util.Locale;
  * @author Nikolay Gabaraev
  */
 public class BruteForceFile {
-
     public static int bruteForceAction(File file) {
-
+        //если файл записать не удастся - вернем -1 в качестве ошибки
         int result = 0;
+        List<String> readLines = null;
 
-        List<String> readedLines = null;
         try {
-            readedLines = Files.readAllLines(Paths.get(file.getPath()));
+            readLines = Files.readAllLines(Paths.get(file.getPath()));
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        //Формируем новый путь для сохранения файла. Добавляем к имени строчку с описанным действием
         String encryptFileName = file.getName().split("[.]")[0] + "_bruteforce." + file.getName().split("[.]")[1];
         String filePathToSave = file.getParent() + "\\" + encryptFileName;
-        List<String> arrayToSave = BruteForceEngine.bruteForce(readedLines);
-        System.out.println("Брутфорсим и сохраняем новый файл по пути - ");
-        System.out.println(filePathToSave);
-
         Path out = Paths.get(filePathToSave);
+        //Пробуем сохранить файл
         if (!Files.exists(out)) {
+            List<String> arrayToSave = BruteForceEngine.bruteForce(readLines);
             try {
                 Files.write(out, arrayToSave, Charset.defaultCharset());
             } catch (IOException e) {

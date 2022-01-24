@@ -14,30 +14,25 @@ import java.util.List;
  * @author Nikolay Gabaraev
  */
 public class StatisticFile {
-
     public static int statisticAction(File encryptFile, File patternFile) {
+        //если файл записать не удастся - вернем -1 в качестве ошибки
         int result = 0;
-
         List<String> encryptFileList = null;
         List<String> patternFileList = null;
 
         try {
             encryptFileList = Files.readAllLines(Paths.get(encryptFile.getPath()));
             patternFileList = Files.readAllLines(Paths.get(patternFile.getPath()));
-            System.out.println("Получили два листа с символами из файла");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        //Формируем новый путь для сохранения файла. Добавляем к имени строчку с описанным действием
         String encryptFileName = encryptFile.getName().split("[.]")[0] + "_statistic." + encryptFile.getName().split("[.]")[1];
         String filePathToSave = encryptFile.getParent() + "\\" + encryptFileName;
-        System.out.println("Запускаем метод дешифровки статистикой");
-        List<String> arrayToSave = StatisticEngine.statisticAction(encryptFileList, patternFileList);
-        System.out.println("Брутфорсим и сохраняем новый файл по пути - ");
-        System.out.println(filePathToSave);
-
         Path out = Paths.get(filePathToSave);
+        //Пробуем сохранить файл
         if (!Files.exists(out)) {
+            List<String> arrayToSave = StatisticEngine.statisticAction(encryptFileList, patternFileList);
             try {
                 Files.write(out, arrayToSave, Charset.defaultCharset());
             } catch (IOException e) {
@@ -49,7 +44,5 @@ public class StatisticFile {
         }
 
         return result;
-
     }
-
 }

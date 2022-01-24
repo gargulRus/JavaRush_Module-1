@@ -24,8 +24,9 @@ public class StartGUI {
 
         JPanel mainpanel = new JPanel();
         mainpanel.setLayout(new GridBagLayout());
-
+        //кнопка для задания 1 (Шифровка-Дешифрвка) - EncryptionGUI
         JButton buttonTask1 = new JButton(Enviroment.buttonTask1);
+        //кнопка для задания 1 (Шифровка-Дешифрвка) - CryptAnalyzerGUI
         JButton buttonTask2 = new JButton(Enviroment.buttonTask2);
         JButton btnExit = new JButton(Enviroment.buttonExit);
 
@@ -58,7 +59,7 @@ public class StartGUI {
         buttonTask2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CryptanalyzerGUI.frame.setVisible(true);
+                CryptAnalyzerGUI.frame.setVisible(true);
                 frame.setVisible(false);
             }
         });

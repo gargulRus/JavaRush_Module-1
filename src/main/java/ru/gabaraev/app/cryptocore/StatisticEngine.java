@@ -1,9 +1,7 @@
 package main.java.ru.gabaraev.app.cryptocore;
 
 import main.java.ru.gabaraev.app.config.Enviroment;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 /*
  * @created 20/01/2022 - 18:56
@@ -16,99 +14,70 @@ public class StatisticEngine {
     public static int allCharsPatt = 0;
 
     public static List<String> statisticAction(List<String> encryptFileList, List<String> patternFileList) {
+
         List<String> resultList = new ArrayList<>();
-        System.out.println("Создаем мапы");
+        //Создаем две мапы из принимаемых в методе строк, pointer нужен для подсчета кол-ва символов
         Map<Character, Integer> encryptMap = fillMap(encryptFileList , 0);
         Map<Character, Integer> patternMap = fillMap(patternFileList , 1);
-        Map<Integer, Character> resultEncryptMap = new TreeMap<>();
-        Map<Integer, Character> resultPatternMap = new TreeMap<>();
-        //testmap
-        Map<Character, Double> testEncMap = new TreeMap<>();
-        Map<Character, Double> testEncMap1 = new TreeMap<>();
-        Map<Character, Double> testPattMap = new TreeMap<>();
-        Map<Character, Double> testPattMap1 = new TreeMap<>();
-        Map<Integer, Character> testEncMapResult = new TreeMap<>();
-        Map<Integer, Character> testPattMapResult = new TreeMap<>();
-        int pp1 = 1;
-        int pp2 = 1;
-        int pp3 = 1;
-        System.out.println("Начнем сопоставление");
+        //Создаем две мапы для подсчета процентного соотношения
+        Map<Character, Double> encryptPercentMap = new TreeMap<>();
+        Map<Character, Double> patternPercentMap = new TreeMap<>();
+        //Мапы для отсортированных данных
+        Map<Character, Double> sortedEncryptPercentMap;
+        Map<Character, Double> sortedPatternPercentMap;
+        //Итоговые мапы для сравнения
+        Map<Integer, Character> resultEncryptPercentMap = new LinkedHashMap<>();
+        Map<Integer, Character> resultPatternPercentMap = new LinkedHashMap<>();
 
-        for (Map.Entry<Character, Integer> entry : encryptMap.entrySet()) {
-            resultEncryptMap.put(pp1, entry.getKey());
-            pp1++;
-        }
-        for (Map.Entry<Character, Integer> entry : patternMap.entrySet()) {
-            resultPatternMap.put(pp2, entry.getKey());
-            pp2++;
-        }
-
-        //testing
+        //В Полученных Мапах рассчитываем процентное соотношение символов к общему числу символов
+        //и после через стримы сортируем по полученным процентам и сохраняем в новую мапу.
+        //Не самое элегантное решение....но на что хватило мозгов =)
         for (Map.Entry<Character, Integer> entry : encryptMap.entrySet()) {
             Double persentCount = (entry.getValue() * 100) / (double) allCharsEnc;
             persentCount = (Math.round(persentCount * 100) )/ 100.0;
-            testEncMap.put(entry.getKey(), persentCount);
-
-            testEncMap1 = testEncMap.entrySet()
-                    .stream()
-                    .sorted(Map.Entry.comparingByValue())
-                    .collect(LinkedHashMap::new,
-                            (m ,c ) -> m.put(c.getKey(), c.getValue()),
-                            LinkedHashMap::putAll);
+            encryptPercentMap.put(entry.getKey(), persentCount);
         }
+        sortedEncryptPercentMap = encryptPercentMap.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(LinkedHashMap::new,
+                        (m ,c ) -> m.put(c.getKey(), c.getValue()),
+                        LinkedHashMap::putAll);
+
         for (Map.Entry<Character, Integer> entry : patternMap.entrySet()) {
             Double persentCount = (entry.getValue() * 100) / (double) allCharsPatt;
             persentCount = (Math.round(persentCount * 100) )/ 100.0;
-            testPattMap.put(entry.getKey(), persentCount);
-
-            testPattMap1 = testPattMap.entrySet()
-                    .stream()
-                    .sorted(Map.Entry.comparingByValue())
-                    .collect(LinkedHashMap::new,
-                            (m ,c ) -> m.put(c.getKey(), c.getValue()),
-                            LinkedHashMap::putAll);
+            patternPercentMap.put(entry.getKey(), persentCount);
         }
-        pp1=1;
-        pp2=1;
-        for (Map.Entry<Character, Double> entry : testEncMap1.entrySet()) {
-            System.out.println(pp1 + " - " + entry.getKey() + ".- " + entry.getValue());
+        sortedPatternPercentMap = patternPercentMap.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(LinkedHashMap::new,
+                        (m ,c ) -> m.put(c.getKey(), c.getValue()),
+                        LinkedHashMap::putAll);
+        //Создаем еще две Мапы. В них кладем значение ключа отсортированной мапы в качестве значения
+        //а в качестве ключа просто порядковый номер.
+        int pp1 = 1;
+        int pp2 = 1;
+        for (Map.Entry<Character, Double> entry : sortedEncryptPercentMap.entrySet()) {
+            resultEncryptPercentMap.put(pp1, entry.getKey());
             pp1++;
         }
-        System.out.println("============");
-        for (Map.Entry<Character, Double> entry : testPattMap1.entrySet()) {
-            System.out.println(pp2 + " - " + entry.getKey() + ".- " + entry.getValue());
+        for (Map.Entry<Character, Double> entry : sortedPatternPercentMap.entrySet()) {
+            resultPatternPercentMap.put(pp2, entry.getKey());
             pp2++;
         }
 
-        pp1=1;
-        pp2=1;
-
-        for (Map.Entry<Character, Double> entry : testEncMap1.entrySet()) {
-            testEncMapResult.put(pp1, entry.getKey());
-            pp1++;
-        }
-        for (Map.Entry<Character, Double> entry : testPattMap1.entrySet()) {
-            testPattMapResult.put(pp2, entry.getKey());
-            pp2++;
-        }
-
-//        for (Map.Entry<Integer, Character> entry : testEncMapResult.entrySet()) {
-//            System.out.println(entry.getKey() + ".- " + entry.getValue());
-//        }
-//        System.out.println("============");
-//        for (Map.Entry<Integer, Character> entry : testPattMapResult.entrySet()) {
-//            System.out.println(entry.getKey() + ".- " + entry.getValue());
-//        }
-
+        //Далее перебираем первую мапу, и сравнивая ключи, подставляем значения из второй мапы.
         for (int i = 0; i < encryptFileList.size(); i++) {
             StringBuilder stringBuilder = new StringBuilder();
 
             char[] charLine = encryptFileList.get(i).toLowerCase(Locale.ROOT).toCharArray();
             for (int j = 0; j < charLine.length; j++) {
-                if (testEncMapResult.containsValue(charLine[j])) {
-                    int key = findKey( testEncMapResult, charLine[j]);
+                if (resultEncryptPercentMap.containsValue(charLine[j])) {
+                    int key = findKey(resultEncryptPercentMap, charLine[j]);
                     if (key > -1) {
-                        stringBuilder.append(testPattMapResult.get(key));
+                        stringBuilder.append(resultPatternPercentMap.get(key));
                     }
                 } else {
                     stringBuilder.append(charLine[j]);
@@ -116,32 +85,6 @@ public class StatisticEngine {
             }
             resultList.add(stringBuilder.toString());
         }
-        //end of test
-
-//        for (Map.Entry<Integer, Character> entry : resultEncryptMap.entrySet()) {
-//            for (Map.Entry<Integer, Character> entry1 : resultPatternMap.entrySet()) {
-//                if (entry.getKey().equals(entry1.getKey())) {
-//                    System.out.println(entry.getValue() + " - " + entry1.getValue());
-//                }
-//            }
-//        }
-
-//        for (int i = 0; i < encryptFileList.size(); i++) {
-//            StringBuilder stringBuilder = new StringBuilder();
-//
-//            char[] charLine = encryptFileList.get(i).toLowerCase(Locale.ROOT).toCharArray();
-//            for (int j = 0; j < charLine.length; j++) {
-//                if (resultEncryptMap.containsValue(charLine[j])) {
-//                    int key = findKey( resultEncryptMap, charLine[j]);
-//                    if (key > -1) {
-//                        stringBuilder.append(resultPatternMap.get(key));
-//                    }
-//                } else {
-//                    stringBuilder.append(charLine[j]);
-//                }
-//            }
-//            resultList.add(stringBuilder.toString());
-//        }
 
         return resultList;
     }
@@ -164,20 +107,12 @@ public class StatisticEngine {
             }
         }
 
-        Map<Character, Integer> returnMap =
-        filledMap.entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByValue())
-                .collect(LinkedHashMap::new,
-                        (m ,c ) -> m.put(c.getKey(), c.getValue()),
-                        LinkedHashMap::putAll);
-        System.out.println("Всего символов - " + allChars);
         if (pointer == 0) {
             allCharsEnc = allChars;
         } else if (pointer == 1) {
             allCharsPatt = allChars;
         }
-        return returnMap;
+        return filledMap;
     }
 
     public static boolean checkChar (char c) {

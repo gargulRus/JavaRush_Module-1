@@ -9,11 +9,12 @@ public class Main {
 
     static StartGUI mainGUI = null;
     static EncryptionGUI encryptionGUI = null;
-    static CryptanalyzerGUI cryptanalyzerGUI = null;
+    static CryptAnalyzerGUI cryptAnalyzerGUI = null;
 
     public static void main(String[] args) {
+        //При старте сразу создаем несколько окон, переключаться на которые будем посредством setVisible
         mainGUI = new StartGUI();
         encryptionGUI = new EncryptionGUI();
-        cryptanalyzerGUI = new CryptanalyzerGUI();
+        cryptAnalyzerGUI = new CryptAnalyzerGUI();
     }
 }

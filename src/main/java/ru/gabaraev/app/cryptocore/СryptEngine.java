@@ -1,7 +1,6 @@
 package main.java.ru.gabaraev.app.cryptocore;
 
 import main.java.ru.gabaraev.app.config.Enviroment;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -12,15 +11,11 @@ import java.util.Locale;
  * @author Nikolay Gabaraev
  */
 public class СryptEngine {
+    public static List<String> encryption (List<String> readLines, int key, int mode) {
 
-    public static List<String> encryption (List<String> readedLines, String key, int mode) {
         List<String> result = new ArrayList();
-
-        Integer keyCrypt = 0;
-        if (key.length() == 0) {
-            keyCrypt = 1;
-        } else {
-            keyCrypt = Integer.parseInt(key);
+        Integer keyCrypt = key;
+        //Если ключ со смещением придет больше чем длинна массива - необходимо это обработать. Зациклить.
             if (keyCrypt > Enviroment.alphabet.length) {
                 while (keyCrypt > Enviroment.alphabet.length) {
                     keyCrypt = keyCrypt - Enviroment.alphabet.length;
@@ -30,12 +25,12 @@ public class СryptEngine {
                     keyCrypt = keyCrypt + Enviroment.alphabet.length;
                 }
             }
-        }
-        System.out.println(keyCrypt);
-        for (int i = 0; i < readedLines.size(); i++) {
-            StringBuilder stringBuilder = new StringBuilder();
+        //Теперь обычный перебор. В полученном массиве каждую строчку бьем на символы и сдвигаем их
+        //основываясь на алфавите
+        for (int i = 0; i < readLines.size(); i++) {
 
-            char[] charLine = readedLines.get(i).toLowerCase(Locale.ROOT).toCharArray();
+            StringBuilder stringBuilder = new StringBuilder();
+            char[] charLine = readLines.get(i).toLowerCase(Locale.ROOT).toCharArray();
 
             for (int j = 0; j < charLine.length; j++) {
                 int getIndex = getCryptIndex(charLine[j]);
@@ -52,7 +47,6 @@ public class СryptEngine {
                             cryptIndex = Enviroment.alphabet.length + (cryptIndex);
                         }
                     }
-                    System.out.println(getIndex + " _ " + cryptIndex + " _ " + Enviroment.alphabet[cryptIndex] + " _ " + charLine[j]);
                     stringBuilder.append(Enviroment.alphabet[cryptIndex]);
                 } else {
                     stringBuilder.append(charLine[j]);

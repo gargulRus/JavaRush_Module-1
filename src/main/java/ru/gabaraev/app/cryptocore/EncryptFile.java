@@ -14,26 +14,23 @@ import java.util.List;
  * @author Nikolay Gabaraev
  */
 public class EncryptFile {
-
-    public static int encryptAction(File file, String key) {
+    public static int encryptAction(File file, int key) {
+        //если файл записать не удастся - вернем -1 в качестве ошибки
         int result = 0;
-
         List<String> readedLines = null;
+
         try {
             readedLines = Files.readAllLines(Paths.get(file.getPath()));
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        //Формируем новый путь для сохранения файла. Добавляем к имени строчку с описанным действием
         String encryptFileName = file.getName().split("[.]")[0] + "_encrypted." + file.getName().split("[.]")[1];
         String filePathToSave = file.getParent() + "\\" + encryptFileName;
-        List<String> arrayToSave = СryptEngine.encryption(readedLines, key, 0);
-        System.out.println("Шифруем и сохраняем новый файл по пути - ");
-        System.out.println(filePathToSave);
-        System.out.println("Смещение " + key);
-
         Path out = Paths.get(filePathToSave);
+        //Пробуем сохранить файл
         if (!Files.exists(out)) {
+            List<String> arrayToSave = СryptEngine.encryption(readedLines, key, 0);
             try {
                 Files.write(out, arrayToSave, Charset.defaultCharset());
             } catch (IOException e) {
@@ -43,7 +40,6 @@ public class EncryptFile {
         } else {
             result = - 1;
         }
-
 
         return result;
     }

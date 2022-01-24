@@ -3,7 +3,6 @@ package main.java.ru.gabaraev.app.gui;
 import main.java.ru.gabaraev.app.config.Enviroment;
 import main.java.ru.gabaraev.app.cryptocore.BruteForceFile;
 import main.java.ru.gabaraev.app.cryptocore.StatisticFile;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,30 +14,28 @@ import java.io.File;
  * @project JavaRush_Module-1
  * @author Nikolay Gabaraev
  */
-public class CryptanalyzerGUI {
+public class CryptAnalyzerGUI {
 
     static JFrame frame = new JFrame();
     static JFrame helpFrame = new JFrame();
     public static File fileToParse_file = null;
     public static File fileToHelp_file = null;
 
-    public static final JLabel fileToParseLabel = new JLabel("Выберите файл для анализа");
-    public static final JLabel fileToHelpLabel = new JLabel("Выберите второй файл для статистики ");
-    public static final JButton fileToParse = new JButton("Файл...");
-    public static final JButton fileToHelp = new JButton(" Файл...");
-    public static final JLabel fileToParseSelected = new JLabel("...");
-    public static final JLabel fileToHelpSelected = new JLabel(" ...");
+    public static final JLabel fileToParseLabel = new JLabel(Enviroment.fileToParseLabel);
+    public static final JLabel fileToHelpLabel = new JLabel(Enviroment.fileToHelpLabel);
+    public static final JButton fileToParse = new JButton(Enviroment.encDecFile);
+    public static final JButton fileToHelp = new JButton(Enviroment.encDecFile);
+    public static final JLabel fileToParseSelected = new JLabel(Enviroment.encDecSelected);
+    public static final JLabel fileToHelpSelected = new JLabel(Enviroment.encDecSelected);
     public static final ButtonGroup btnGroup = new ButtonGroup();
-    public static final JRadioButton bruteForce = new JRadioButton("Метод BruteForceFile");
-    public static final JRadioButton statistical = new JRadioButton("Статистический метод");
+    public static final JRadioButton bruteForce = new JRadioButton(Enviroment.bruteForce);
+    public static final JRadioButton statistical = new JRadioButton(Enviroment.statistical);
 
     public static final JButton btnOk = new JButton(Enviroment.buttonOk);
     public static final JButton btnHelpOk = new JButton(Enviroment.buttonOk);
     public static final JButton buttonBack = new JButton(Enviroment.buttonBack);
 
-    public CryptanalyzerGUI() {
-//        JFrame frame = new JFrame();
-        //frame.setSize(800, 800);
+    public CryptAnalyzerGUI() {
         frame.setTitle(Enviroment.frameName);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
@@ -63,6 +60,7 @@ public class CryptanalyzerGUI {
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20,10,0,2), 0,0)
         );
+
         mainpanel.add(fileToParse, new GridBagConstraints(2,0,1,1,0,0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20,10,0,2), 0,0)
@@ -102,27 +100,26 @@ public class CryptanalyzerGUI {
 
         frame.add(scroll);
         frame.setVisible(false);
-        //frame.pack();
 
         helpFrame.setSize(700, 200);
         helpFrame.setTitle(Enviroment.frameName);
         helpFrame.setLocationRelativeTo(null);
-        JPanel helppanel = new JPanel();
-        helppanel.setLayout(new GridBagLayout());
-        helppanel.add(fileToHelpLabel,new GridBagConstraints(1,0,1,1,0,0,
+        JPanel helpPanel = new JPanel();
+        helpPanel.setLayout(new GridBagLayout());
+        helpPanel.add(fileToHelpLabel,new GridBagConstraints(1,0,1,1,0,0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20,10,0,20), 0,0));
-        helppanel.add(fileToHelp,new GridBagConstraints(2,0,1,1,0,0,
+        helpPanel.add(fileToHelp,new GridBagConstraints(2,0,1,1,0,0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20,10,0,20), 0,0));
-        helppanel.add(fileToHelpSelected,new GridBagConstraints(3,0,3,1,0,0,
+        helpPanel.add(fileToHelpSelected,new GridBagConstraints(3,0,3,1,0,0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20,10,0,20), 0,0));
-        helppanel.add(btnHelpOk,new GridBagConstraints(4,1,1,1,0,0,
+        helpPanel.add(btnHelpOk,new GridBagConstraints(4,1,1,1,0,0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(20,10,0,0), 0,0));
 
-        JScrollPane scrollHelp = new JScrollPane(helppanel,
+        JScrollPane scrollHelp = new JScrollPane(helpPanel,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
@@ -134,36 +131,28 @@ public class CryptanalyzerGUI {
         @Override
         public void actionPerformed(ActionEvent event) {
             if (fileToParse_file != null) {
-                System.out.println("Файл получен - готовы к взлому");
-
                 if (bruteForce.isSelected()) {
-                    System.out.println("Будем брутфорсить");
                     int result = BruteForceFile.bruteForceAction(fileToParse_file);
                     if (result == 1 ) {
                         JFrame mdFrame = new JFrame();
-                        JOptionPane.showMessageDialog(mdFrame, "Расшифровано!", "Внимание!", JOptionPane.INFORMATION_MESSAGE);
-                        System.out.println("Расшифровано");
+                        JOptionPane.showMessageDialog(mdFrame, Enviroment.encryptSuccess, Enviroment.errorTitle, JOptionPane.INFORMATION_MESSAGE);
                         fileToParse_file = null;
                         fileToParseSelected.setText(Enviroment.encDecSelected);
-                    } else if (result == 0) {
-                        System.out.println("Ошибка");
                     } else if (result == -1) {
                         JFrame mdFrame = new JFrame();
-                        JOptionPane.showMessageDialog(mdFrame, "Файл существует! Удалите файл!", "Внимание!", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(mdFrame, Enviroment.encryptError, Enviroment.errorTitle, JOptionPane.ERROR_MESSAGE);
                     }
-
                 } else if (statistical.isSelected()) {
-                    System.out.println("Будем дешифровать статистикой");
                     helpFrame.setVisible(true);
                     fileToHelp.addActionListener(new fileToHelpAction());
                     btnHelpOk.addActionListener(new ButtonHelpOk());
                 } else {
                     JFrame mdFrame = new JFrame();
-                    JOptionPane.showMessageDialog(mdFrame, "Выберите метод анализа!", "Внимание!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(mdFrame, Enviroment.selectAnalyzeType, Enviroment.errorTitle, JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 JFrame mdFrame = new JFrame();
-                JOptionPane.showMessageDialog(mdFrame, "Выберите файл!", "Внимание!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(mdFrame, Enviroment.selectFile, Enviroment.errorTitle, JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -172,18 +161,17 @@ public class CryptanalyzerGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(fileToParse_file != null && fileToHelp_file != null) {
-                System.out.println("Получили два файла. Выбран метод статистики");
                 int result = StatisticFile.statisticAction(fileToParse_file, fileToHelp_file);
                 if (result == 1) {
                     JFrame mdFrame = new JFrame();
-                    JOptionPane.showMessageDialog(mdFrame, "Файл расшифрован");
+                    JOptionPane.showMessageDialog(mdFrame,  Enviroment.decryptSuccess, Enviroment.errorTitle, JOptionPane.INFORMATION_MESSAGE);
                     fileToParse_file = null;
                     fileToHelp_file = null;
                     fileToParseSelected.setText(Enviroment.encDecSelected);
                     helpFrame.setVisible(false);
                 } else if (result == -1){
                     JFrame mdFrame = new JFrame();
-                    JOptionPane.showMessageDialog(mdFrame, "Ошибка! файл сущетсвует удалите!");
+                    JOptionPane.showMessageDialog(mdFrame, Enviroment.encryptError, Enviroment.errorTitle, JOptionPane.ERROR_MESSAGE);
                     fileToHelp_file = null;
                     fileToHelpSelected.setText(Enviroment.encDecSelected);
                 }

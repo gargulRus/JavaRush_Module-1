@@ -14,28 +14,25 @@ import java.util.List;
  * @author Nikolay Gabaraev
  */
 public class DecryptFile {
-
-    public static int decryptAction(File file, String key) {
+    public static int decryptAction(File file, int key) {
+        //если файл записать не удастся - вернем -1 в качестве ошибки
         int result = 0;
+        List<String> readLines = null;
 
-        List<String> readedLines = null;
         try {
-            readedLines = Files.readAllLines(Paths.get(file.getPath()));
+            readLines = Files.readAllLines(Paths.get(file.getPath()));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //Формируем новый путь для сохранения файла. Добавляем к имени строчку с описанным действием
         String encryptFileName = file.getName().split("[.]")[0] + "_decrypted." + file.getName().split("[.]")[1];
         String filePathToSave = file.getParent() + "\\" + encryptFileName;
-        List<String> arrayToSave = СryptEngine.encryption(readedLines, key, 1);
-        System.out.println("Дешифруем и сохраняем новый файл по пути - ");
-        System.out.println(filePathToSave);
-        System.out.println("Смещение " + key);
-
         Path out = Paths.get(filePathToSave);
+        //Пробуем сохранить файл
         if (!Files.exists(out)) {
+            List<String> arrayToSave = СryptEngine.encryption(readLines, key, 1);
             try {
                 Files.write(out, arrayToSave, Charset.defaultCharset());
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -43,7 +40,6 @@ public class DecryptFile {
         } else {
             result = - 1;
         }
-
 
         return result;
     }
