@@ -64,9 +64,40 @@ public class BruteForceEngine {
                                 score = 0;
                             }
                         }
-                    }
-                    else {
-                        score++;
+                    } else {
+                        final boolean b = Character.isWhitespace(afterChar[i + 1]) || Character.isSpaceChar(afterChar[i + 1]);
+                        
+                        if (afterChar[i] == '!') {
+                            if (i < afterChar.length - 1 && i > 0) {
+                                if (Character.isLetter(afterChar[i-1]) && afterChar[i] == '!'
+                                        && b) {
+                                    score = 0;
+                                }
+                            }
+                        } else if (afterChar[i] == '?') {
+                            if (i < afterChar.length - 1 && i > 0) {
+                                if (Character.isLetter(afterChar[i-1]) && afterChar[i] == '?'
+                                        && b) {
+                                    score = 0;
+                                }
+                            }
+                        } else if (afterChar[i] == ',') {
+                            if (i < afterChar.length - 1 && i > 0) {
+                                if (Character.isLetter(afterChar[i-1]) && afterChar[i] == ','
+                                        && b) {
+                                    score = 0;
+                                }
+                            }
+                        } else if (afterChar[i] == '.') {
+                            if (i < afterChar.length - 1 && i > 0) {
+                                if (Character.isLetter(afterChar[i-1]) && afterChar[i] == '.'
+                                        && b) {
+                                    score = 0;
+                                }
+                            }
+                        } else {
+                            score++;
+                        }
                     }
                 } else {
                     break;
