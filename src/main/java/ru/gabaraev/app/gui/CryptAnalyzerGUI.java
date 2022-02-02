@@ -135,7 +135,7 @@ public class CryptAnalyzerGUI {
                     int result = BruteForceFile.bruteForceAction(fileToParse_file);
                     if (result == 1 ) {
                         JFrame mdFrame = new JFrame();
-                        JOptionPane.showMessageDialog(mdFrame, Enviroment.encryptSuccess, Enviroment.errorTitle, JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(mdFrame, Enviroment.decryptSuccess, Enviroment.errorTitle, JOptionPane.INFORMATION_MESSAGE);
                         fileToParse_file = null;
                         fileToParseSelected.setText(Enviroment.encDecSelected);
                     } else if (result == -1) {
